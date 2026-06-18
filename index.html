@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIPLAST | Soluciones Industriales en Tintas Especiales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;600;700;800&display=swap');
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfcfd;
+        }
+
+        /* Hero con imagen de fondo "herolow.jpg" y máscara de contraste oscuro */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(9, 9, 11, 0.94) 0%, rgba(24, 24, 27, 0.88) 50%, rgba(15, 23, 42, 0.96) 100%), 
+                        url('herolow.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: auto;
+            height: 300px;
+        }
+
+        /* Efecto de borde dinámico tricolor al hacer hover */
+        .brand-card-hover {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .brand-card-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #dc2626 0%, #eab308 50%, #0ea5e9 100%);
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .brand-card-hover:hover::before {
+            opacity: 1;
+        }
+
+        .brand-card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="text-zinc-900 selection:bg-sky-500 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav border-b border-zinc-200">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            
+            <!-- Contenedor del Logo de la Empresa -->
+            <a href="#top" class="flex items-center gap-3">
+                <img src="logoquiplast2.png" alt="QUIPLAST" class="h-14 w-auto object-contain py-1" onerror="this.onerror=null; this.outerHTML='<div class=\'w-12 h-12 bg-black text-white flex items-center justify-center font-bold rounded-lg\'>Q</div><span class=\'text-xl font-extrabold text-zinc-950 uppercase tracking-tighter\'>QUIPLAST</span>'">
+                <div class="hidden lg:flex flex-col border-l border-zinc-200 pl-3">
+                    <span class="text-xs font-bold tracking-widest text-zinc-400 uppercase">Tecnología Química</span>
+                    <span class="text-[10px] text-zinc-500 font-semibold"> de Exportación</span>
+                </div>
+            </a>
+            
+            <!-- Navegación de Escritorio -->
+            <div class="hidden md:flex items-center gap-6 font-semibold text-sm">
+                <!-- Dropdown de Secciones Principal -->
+                <div class="relative">
+                    <button onclick="toggleDropdown(event)" class="flex items-center gap-1.5 hover:text-red-600 transition focus:outline-none py-2 text-zinc-950 font-extrabold bg-zinc-100 hover:bg-zinc-200/70 px-4 rounded-xl">
+                        Navegar Secciones
+                        <svg class="w-4 h-4 transition-transform duration-200" id="dropdownArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <!-- Menú Desplegable Flotante -->
+                    <div id="sectionsDropdown" class="hidden absolute left-0 mt-2.5 w-60 bg-white border border-zinc-200 rounded-xl shadow-2xl z-50 overflow-hidden transform origin-top-right transition-all duration-150">
+                        <div class="py-1">
+                            <a href="#top" class="block px-5 py-3 text-sm text-zinc-700 hover:bg-zinc-50 hover:text-red-600 border-b border-zinc-100 transition">Inicio</a>
+                            <a href="#nosotros" class="block px-5 py-3 text-sm text-zinc-700 hover:bg-zinc-50 hover:text-yellow-600 border-b border-zinc-100 transition">Historia y Empresa</a>
+                            <a href="#soluciones" class="block px-5 py-3 text-sm text-zinc-700 hover:bg-zinc-50 hover:text-sky-600 border-b border-zinc-100 transition">Soluciones por Sustrato</a>
+                            <a href="#compliance" class="block px-5 py-3 text-sm text-zinc-700 hover:bg-zinc-50 hover:text-red-600 border-b border-zinc-100 transition">Normativas de Exportación</a>
+                            <a href="#contacto" class="block px-5 py-3 text-sm text-zinc-700 hover:bg-zinc-50 hover:text-sky-600 transition">Contacto de Exportación</a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#nosotros" class="hover:text-red-600 text-zinc-700 transition">La Empresa</a>
+                <a href="#soluciones" class="hover:text-yellow-600 text-zinc-700 transition">Soluciones</a>
+                <a href="#compliance" class="hover:text-sky-600 text-zinc-700 transition">Certificaciones</a>
+                <a href="#contacto" class="px-5 py-2 bg-zinc-950 text-white rounded-xl hover:bg-red-600 transition-all font-bold">Solicitar Cotización</a>
+            </div>
+
+            <!-- Menú de Idiomas y Soporte Rápido -->
+            <div class="hidden md:flex items-center gap-4 text-xs font-bold">
+                <div class="flex gap-2">
+                    <span class="text-zinc-950 border-b-2 border-red-600 cursor-pointer px-1">ES</span>
+                    <span class="text-zinc-400 hover:text-yellow-500 cursor-pointer px-1 transition">EN</span>
+                    <span class="text-zinc-400 hover:text-sky-500 cursor-pointer px-1 transition">PT</span>
+                </div>
+            </div>
+
+            <!-- Botón de Menú Móvil -->
+            <button onclick="toggleMobileMenu(event)" class="md:hidden flex items-center text-zinc-600 hover:text-zinc-950 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path id="mobileMenuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-b border-zinc-200 w-full px-6 py-4 space-y-3 shadow-lg max-h-[85vh] overflow-y-auto">
+            <a href="#top" onclick="closeMobileMenu()" class="block font-semibold text-zinc-700 hover:text-red-600 py-2.5 border-b border-zinc-100">Inicio</a>
+            <a href="#nosotros" onclick="closeMobileMenu()" class="block font-semibold text-zinc-700 hover:text-yellow-600 py-2.5 border-b border-zinc-100">La Empresa / Historia</a>
+            <a href="#soluciones" onclick="closeMobileMenu()" class="block font-semibold text-zinc-700 hover:text-sky-600 py-2.5 border-b border-zinc-100">Soluciones por Sustrato</a>
+            <a href="#compliance" onclick="closeMobileMenu()" class="block font-semibold text-zinc-700 hover:text-red-600 py-2.5 border-b border-zinc-100">Certificaciones Técnicas</a>
+            <div class="pt-2 flex flex-col gap-4">
+                <a href="#contacto" onclick="closeMobileMenu()" class="block w-full text-center px-5 py-3 bg-zinc-950 text-white rounded-xl hover:bg-red-600 transition-all font-bold">
+                    Solicitar Cotización
+                </a>
+                <div class="flex gap-4 justify-center text-xs font-bold py-2">
+                    <span class="text-zinc-950 border-b-2 border-red-600 cursor-pointer">ES</span>
+                    <span class="text-zinc-400 hover:text-yellow-500 cursor-pointer">EN</span>
+                    <span class="text-zinc-400 hover:text-sky-500 cursor-pointer">PT</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-24 hero-bg text-white relative overflow-hidden">
+        <!-- Decoraciones de fondo sutiles emulando los colores del logo -->
+        <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-sky-500/10 rounded-full filter blur-[100px] -z-0"></div>
+        <div class="absolute bottom-0 left-1/3 w-[300px] h-[300px] bg-red-600/10 rounded-full filter blur-[80px] -z-0"></div>
+        <div class="absolute top-1/2 left-10 w-[200px] h-[200px] bg-yellow-500/5 rounded-full filter blur-[60px] -z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+                <!-- Badge tricolor -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/5 rounded-full mb-6 border border-white/15 text-xs font-semibold">
+                    <span class="flex h-2 w-2 rounded-full bg-red-600"></span>
+                    <span class="flex h-2 w-2 rounded-full bg-yellow-500"></span>
+                    <span class="flex h-2 w-2 rounded-full bg-sky-500"></span>
+                    <span class="text-zinc-300 ml-1">QUÍMICA DE IMPRESIÓN</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                    Tintas Técnicas de Alta Performance <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-400 to-sky-400">para la industria gráfica.</span>
+                </h1>
+                
+                <p class="text-zinc-300 text-base md:text-lg mb-8 leading-relaxed max-w-lg">
+                    Fabricación Argentina con estándares internacionales. Soluciones en UV, Vinílicas y Epoxi para los desafíos de impresión más exigentes.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#soluciones" class="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-bold px-8 py-4 rounded-xl transition shadow-lg shadow-red-600/20 text-center w-full sm:w-auto">
+                        Ver Catálogo de Sustratos
+                    </a>
+                    <a href="#contacto" class="bg-zinc-800/80 hover:bg-zinc-700 text-zinc-100 border border-zinc-700 hover:border-zinc-500 font-bold px-8 py-4 rounded-xl transition text-center w-full sm:w-auto">
+                        Cotizar Operación
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Panel Estadístico del Laboratorio (Control de Estabilidad Real) -->
+            <div class="hidden md:block">
+                <div class="bg-zinc-900/90 p-8 rounded-3xl border border-zinc-800 backdrop-blur-md relative">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h3 class="text-zinc-100 font-bold text-sm">Control de Estabilidad Técnica</h3>
+                            <p class="text-xs text-zinc-400">Desviación estándar delta-E de producción (Colorímetro)</p>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-sky-500 inline-block"></span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="heroStatsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About / History Section -->
+    <section id="nosotros" class="py-24 bg-white border-b border-zinc-200">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            
+            <!-- Detalle Histórico Real de la Empresa -->
+            <div class="relative">
+                <span class="text-xs font-bold uppercase tracking-widest text-red-600">NUESTRA TRAYECTORIA</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-zinc-950 mt-2 mb-6">
+                    Líderes en formulación y desarrollo tecnológico propio
+                </h2>
+                
+                <div class="space-y-4 text-zinc-600 leading-relaxed">
+                    <p>
+                        Fundada en <strong>1959</strong> por los hermanos Cupido y Arquímedes Piol, <strong>QUIPLAST</strong> nació con la misión de proveer soluciones de alta ingeniería para la decoración e impresión gráfica de plásticos y otros materiales complejos. 
+                    </p>
+                    <p>
+                        Fuimos <strong>pioneros absolutos en la Argentina</strong> en el desarrollo de tecnologías de curado ultravioleta (UV), un hito que redefinió los estándares de productividad y sustentabilidad en la industria regional, reduciendo dramáticamente los tiempos de secado y los espacios de almacenamiento de los impresores.
+                    </p>
+                    <p>
+                        Hoy, con más de seis décadas en el mercado, operamos desde nuestra equipada planta industrial en <strong>San Martín, Buenos Aires</strong>. Combinamos la invaluable experiencia de nuestra trayectoria con un constante desarrollo en laboratorio (I+D) para formular tintas a medida, cumpliendo con los estándares de exportación más rigurosos de Latinoamérica.
+                    </p>
+                </div>
+
+                <!-- Elemento de Identidad Oficial y Miniatura de Envases (2.jpg) -->
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-12 gap-4">
+                    <div class="sm:col-span-8 flex items-center gap-4 p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
+                        <img src="logoquiplast2.png" alt="Sello Quiplast" class="h-10 w-auto object-contain" onerror="this.style.display='none'">
+                        <p class="text-xs text-zinc-500 font-medium">
+                            Tecnología de avanzada y principios rectores familiares que sostienen el crecimiento de marcas líderes en toda la región.
+                        </p>
+                    </div>
+                    <!-- Miniatura de los botes/envases incorporando 2.jpg sin comprometer espacio -->
+                    <div class="sm:col-span-4 relative group overflow-hidden rounded-2xl border border-zinc-200 shadow-sm aspect-square bg-zinc-100 flex items-center justify-center">
+                        <img src="2.jpg" alt="Envases Quiplast" class="object-cover w-full h-full transition duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-2">
+                            <span class="text-[10px] text-white font-bold tracking-wider uppercase">Nuestros Envases</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grilla de Desempeño y Capacidad -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Tarjeta 1 - Roja -->
+                <div class="bg-zinc-50 p-6 rounded-2xl border-l-4 border-red-600 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-red-600/5 rounded-bl-full"></div>
+                    <span class="block text-4xl font-extrabold text-zinc-950 mb-1">65+</span>
+                    <h4 class="font-bold text-zinc-800 text-sm mb-1">Años de Historia</h4>
+                    <p class="text-zinc-500 text-xs">Acompañando la evolución de la industria gráfica regional desde 1959.</p>
+                </div>
+                
+                <!-- Tarjeta 2 - Amarilla -->
+                <div class="bg-zinc-50 p-6 rounded-2xl border-l-4 border-yellow-500 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-500/5 rounded-bl-full"></div>
+                    <span class="block text-4xl font-extrabold text-zinc-950 mb-1">100%</span>
+                    <h4 class="font-bold text-zinc-800 text-sm mb-1">Tecnología Propia</h4>
+                    <p class="text-zinc-500 text-xs">Formulaciones exclusivas desarrolladas de forma independiente.</p>
+                </div>
+                
+                <!-- Tarjeta 3 - Azul -->
+                <div class="bg-zinc-50 p-6 rounded-2xl border-l-4 border-sky-500 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-sky-500/5 rounded-bl-full"></div>
+                    <span class="block text-3xl font-extrabold text-zinc-950 mb-1">Planta</span>
+                    <h4 class="font-bold text-zinc-800 text-sm mb-1">San Martín, AR</h4>
+                    <p class="text-zinc-500 text-xs">Instalaciones productivas optimizadas para despachos internacionales rápidos.</p>
+                </div>
+                
+                <!-- Tarjeta 4 - Oscura -->
+                <div class="bg-zinc-50 p-6 rounded-2xl border-l-4 border-zinc-900 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-zinc-900/5 rounded-bl-full"></div>
+                    <span class="block text-4xl font-extrabold text-zinc-950 mb-1">Pioneros</span>
+                    <h4 class="font-bold text-zinc-800 text-sm mb-1">En Tecnología UV</h4>
+                    <p class="text-zinc-500 text-xs">Introdujimos el curado ultravioleta de alto rendimiento en el mercado local.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Solutions Finder -->
+    <section id="soluciones" class="py-24 bg-zinc-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold uppercase tracking-widest text-sky-600">CENTRO DE SOLUCIONES TÉCNICAS</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-zinc-950 mt-2 mb-4">Garantía de Adherencia en todo Sustrato</h2>
+                <p class="text-zinc-500 max-w-2xl mx-auto">Seleccione la base o tecnología de curado que requiere su proceso de impresión para filtrar nuestras formulaciones activas.</p>
+            </div>
+
+            <!-- Filtros de tecnología usando colores del logo para los bordes/activación -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="filterProducts('all')" class="filter-btn px-6 py-2.5 rounded-xl border border-zinc-200 font-bold text-sm bg-zinc-950 text-white transition-all shadow-sm">Todos los Productos</button>
+                <button onclick="filterProducts('uv')" class="filter-btn px-6 py-2.5 rounded-xl border border-zinc-200 font-bold text-sm bg-white text-zinc-700 hover:border-red-600 hover:text-red-600 transition-all shadow-sm">Tecnología UV</button>
+                <button onclick="filterProducts('plastico')" class="filter-btn px-6 py-2.5 rounded-xl border border-zinc-200 font-bold text-sm bg-white text-zinc-700 hover:border-yellow-500 hover:text-yellow-600 transition-all shadow-sm">Plásticos (PP, PVC, PET)</button>
+                <button onclick="filterProducts('especial')" class="filter-btn px-6 py-2.5 rounded-xl border border-zinc-200 font-bold text-sm bg-white text-zinc-700 hover:border-sky-500 hover:text-sky-600 transition-all shadow-sm">Vidrio, Metal y Epoxis</button>
+            </div>
+
+            <!-- Grid Dinámico de Productos -->
+            <div id="productGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Se poblará dinámicamente mediante javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Compliance & Downloads Section -->
+    <section id="compliance" class="py-24 bg-white border-y border-zinc-200">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            
+            <!-- Info Regulatoria -->
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-red-600">COMPLIANCE DE EXPORTACIÓN</span>
+                <h2 class="text-3xl font-extrabold text-zinc-950 mt-2 mb-6">Seguridad Química para Mercados Corporativos</h2>
+                
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-red-600 bg-red-50 border border-red-100 flex-shrink-0 font-bold">
+                            GHS
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-base text-zinc-900">Sistema Globalmente Armonizado</h4>
+                            <p class="text-zinc-500 text-sm mt-1">Suministramos Fichas de Datos de Seguridad (MSDS/FDS) con codificación internacional estándar para despachos sin trabas aduaneras.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-yellow-600 bg-yellow-50 border border-yellow-100 flex-shrink-0 font-bold">
+                            Pb
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-base text-zinc-900">Certificación Libre de Metales Pesados</h4>
+                            <p class="text-zinc-500 text-sm mt-1">Cumplimiento irrestricto de las leyes de inocuidad en juguetes, vajilla y envases de consumo masivo.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center text-sky-600 bg-sky-50 border border-sky-100 flex-shrink-0 font-bold">
+                            ISO
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-base text-zinc-900">Aseguramiento de Calidad Lote a Lote</h4>
+                            <p class="text-zinc-500 text-sm mt-1">Trazabilidad completa mediante muestroteca de retención por 24 meses para cada despacho de exportación.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 p-5 bg-zinc-50 rounded-2xl border border-zinc-200 flex items-start gap-4">
+                    <div class="text-lg">📢</div>
+                    <p class="text-xs text-zinc-600">
+                        <strong>¿Necesita homologar un desarrollo?</strong> Diseñamos fórmulas con especificaciones de viscosidad, velocidad de curado y flexibilidad que se adaptan a su equipamiento específico.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Descargas de Documentación Técnica -->
+            <div class="bg-zinc-950 rounded-3xl p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl">
+                <!-- Tricolor vertical de fondo en el panel de descargas -->
+                <div class="absolute top-0 right-0 w-2 h-full bg-gradient-to-b from-red-600 via-yellow-500 to-sky-500"></div>
+
+                <div class="relative z-10">
+                    <span class="text-xs text-yellow-400 font-bold uppercase tracking-wider">BIBLIOTECA TÉCNICA</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-4">Hojas de Datos de Seguridad y TDS</h3>
+                    <p class="text-zinc-400 text-sm mb-8">Consulte de forma directa las fichas técnicas estándar. Para lotes y formulaciones específicas, comuníquese con el laboratorio central.</p>
+                    
+                    <div class="space-y-4">
+                        <div onclick="triggerDownload('TDS - Línea Serigráfica UV Flexo')" class="group flex justify-between items-center p-4 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-red-600 hover:bg-zinc-900/80 cursor-pointer transition">
+                            <span class="text-xs font-semibold text-zinc-100 group-hover:text-red-500 transition">TDS - Tintas UV Flexo</span>
+                            <span class="text-xs bg-zinc-800 group-hover:bg-red-600 group-hover:text-white px-2.5 py-1 rounded-md text-zinc-400 transition font-mono">PDF ↓</span>
+                        </div>
+                        
+                        <div onclick="triggerDownload('MSDS - Línea Vinílica Solvente Premium')" class="group flex justify-between items-center p-4 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-yellow-500 hover:bg-zinc-900/80 cursor-pointer transition">
+                            <span class="text-xs font-semibold text-zinc-100 group-hover:text-yellow-500 transition">MSDS - Serie Vinílica Brillo</span>
+                            <span class="text-xs bg-zinc-800 group-hover:bg-yellow-500 group-hover:text-black px-2.5 py-1 rounded-md text-zinc-400 transition font-mono">PDF ↓</span>
+                        </div>
+                        
+                        <div onclick="triggerDownload('Guía de Catalizadores y Diluyentes de Curado')" class="group flex justify-between items-center p-4 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-sky-500 hover:bg-zinc-900/80 cursor-pointer transition">
+                            <span class="text-xs font-semibold text-zinc-100 group-hover:text-sky-400 transition">Guía de Diluyentes e Iniciadores</span>
+                            <span class="text-xs bg-zinc-800 group-hover:bg-sky-500 group-hover:text-white px-2.5 py-1 rounded-md text-zinc-400 transition font-mono">PDF ↓</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- B2B Quote Form -->
+    <section id="contacto" class="py-24 bg-white relative">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold uppercase tracking-widest text-zinc-500">CANAL DE COMERCIO EXTERIOR</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-zinc-950 mt-2">Cotización para Distribuidores e Importadores</h2>
+                <p class="text-zinc-500 mt-4">Nuestros analistas y químicos procesarán su solicitud para enviarle una propuesta de volumen adaptada a sus requerimientos y normativas locales.</p>
+            </div>
+
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-8 lg:p-10 rounded-3xl border border-zinc-200 shadow-xl relative" onsubmit="handleFormSubmit(event)">
+                <!-- Detalle superior de color tricolor como el logo -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-yellow-500 to-sky-500 rounded-t-3xl"></div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-zinc-500 tracking-wider">Razón Social de la Empresa</label>
+                    <input required id="formCompany" type="text" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none transition" placeholder="Nombre legal de la compañía">
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-zinc-500 tracking-wider">País de Destino (Logística)</label>
+                    <select id="formCountry" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none transition">
+                        <option value="Brasil">Brasil 🇧🇷</option>
+                        <option value="Chile">Chile 🇨🇱</option>
+                        <option value="Colombia">Colombia 🇨🇴</option>
+                        <option value="Perú">Perú 🇵🇪</option>
+                        <option value="Uruguay">Uruguay 🇺🇾</option>
+                        <option value="Otro">Otro Destino</option>
+                    </select>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-zinc-500 tracking-wider">Sustrato a Imprimir</label>
+                    <input required id="formSubstrate" type="text" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition" placeholder="Ej: Polietileno de Alta Densidad, Vidrio">
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase text-zinc-500 tracking-wider">Consumo Mensual Estimado</label>
+                    <input required id="formVolume" type="text" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-red-600 focus:border-red-600 outline-none transition" placeholder="Ej: 800 Kg">
+                </div>
+
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-xs font-bold uppercase text-zinc-500 tracking-wider">Especificaciones Adicionales o Normativa Local</label>
+                    <textarea id="formSpecs" rows="4" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl focus:ring-2 focus:ring-zinc-950 focus:border-zinc-950 outline-none transition" placeholder="Indique requerimientos específicos de curado (UV, Aire, Horno), resistencias químicas particulares o regulaciones nacionales que debemos auditar..."></textarea>
+                </div>
+
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-zinc-950 hover:bg-zinc-900 text-white font-bold py-4 rounded-xl transition-all text-base shadow-lg shadow-zinc-950/10 flex items-center justify-center gap-2">
+                        <span>Enviar Solicitud</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Notification Toast de Formulario -->
+            <div id="toastSuccess" class="hidden mt-6 p-4 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center gap-3 text-white">
+                <span class="text-emerald-500 font-bold">✔</span>
+                <span class="text-sm">Solicitud recibida. Un ejecutivo de exportación y un químico asignado responderán a su correo dentro de las próximas 48 horas hábiles.</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 text-white py-16 px-6 relative overflow-hidden">
+        <!-- Detalle decorativo tricolor superior -->
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-600 via-yellow-500 to-sky-500"></div>
+
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-3 mb-6">
+                    <img src="logoquiplast2.png" alt="QUIPLAST S.A." class="h-10 w-auto object-contain bg-white p-1 rounded" onerror="this.style.display='none'">
+                    <span class="text-xl font-bold tracking-tighter uppercase text-white">Quiplast</span>
+                </div>
+                <p class="text-zinc-400 text-sm max-w-sm leading-relaxed">
+                    Líderes en formulación y desarrollo de tintas técnicas especiales. Planta industrial en San Martín, Buenos Aires, Argentina. Exportación regional.
+                </p>
+                <div class="mt-6 flex gap-3 text-xs text-zinc-500">
+                    <span class="border border-zinc-800 px-2 py-1 rounded">ISO 9001:2015 Compliant</span>
+                    <span class="border border-zinc-800 px-2 py-1 rounded">SGA / GHS Standard</span>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="font-bold mb-6 text-sm text-zinc-100 uppercase tracking-widest border-b border-zinc-800 pb-2">Soluciones</h5>
+                <ul class="text-sm text-zinc-400 space-y-3">
+                    <li><a href="#soluciones" class="hover:text-red-500 transition">Tintas UV Flexo</a></li>
+                    <li><a href="#soluciones" class="hover:text-yellow-500 transition">Sustratos Plásticos</a></li>
+                    <li><a href="#soluciones" class="hover:text-sky-500 transition">Epoxi de Alta Resistencia</a></li>
+                    <li><a href="#soluciones" class="hover:text-zinc-200 transition">Línea Vinílica Solvente</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h5 class="font-bold mb-6 text-sm text-zinc-100 uppercase tracking-widest border-b border-zinc-800 pb-2">Contacto Directo</h5>
+                <p class="text-sm text-zinc-400">info@quiplast.com.ar</p>
+                <p class="text-sm text-zinc-400 mt-2">Planta Industrial: Calle 29 (Ex Mercedes) N° 2976, San Martín</p>
+                <p class="text-sm text-zinc-400 mt-2">+54 (011) 4752-6122</p>
+                <div class="mt-6">
+                    <a href="https://www.linkedin.com" target="_blank" class="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-red-600 transition cursor-pointer text-sm">
+                        in
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto border-t border-zinc-900 mt-12 pt-8 text-xs text-center text-zinc-500 flex flex-col sm:flex-row justify-between gap-4">
+            <div>
+                &copy; 2026 TINTASPRESS S.A.S.- Todos los derechos reservados. | Formulación Química de Alta Consistencia.
+            </div>
+            <div class="flex justify-center gap-4 text-[10px]">
+                <a href="#compliance" class="hover:underline">Políticas de Calidad</a>
+                <span>•</span>
+                <a href="#compliance" class="hover:underline">Seguridad Higiénica</a>
+                <span>•</span>
+                <a href="#contacto" class="hover:underline">Canal de Denuncias</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inicialización del Gráfico de Estabilidad Técnica con los colores corporativos
+        const ctx = document.getElementById('heroStatsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lote 101', 'Lote 102', 'Lote 103', 'Lote 104', 'Lote 105'],
+                datasets: [
+                    {
+                        label: 'Línea UV (Curado)',
+                        data: [0.12, 0.08, 0.15, 0.07, 0.09],
+                        borderColor: '#dc2626', // Rojo del Logo
+                        backgroundColor: 'rgba(220, 38, 38, 0.05)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#dc2626'
+                    },
+                    {
+                        label: 'Línea Vinílica (Brillo)',
+                        data: [0.18, 0.11, 0.14, 0.09, 0.12],
+                        borderColor: '#eab308', // Amarillo del Logo
+                        backgroundColor: 'rgba(234, 179, 8, 0.05)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#eab308'
+                    },
+                    {
+                        label: 'Línea Epoxi (Adherencia)',
+                        data: [0.09, 0.14, 0.08, 0.12, 0.11],
+                        borderColor: '#0ea5e9', // Azul/Cian del Logo
+                        backgroundColor: 'rgba(14, 165, 233, 0.05)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#0ea5e9'
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: { 
+                    legend: { 
+                        display: true,
+                        labels: {
+                            color: '#e4e4e7',
+                            font: {
+                                size: 10,
+                                family: 'Plus Jakarta Sans'
+                            }
+                        }
+                    } 
+                },
+                scales: {
+                    x: { 
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#a1a1aa', font: { size: 9 } }
+                    },
+                    y: { 
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { color: '#a1a1aa', font: { size: 9 } },
+                        min: 0,
+                        max: 0.3
+                    }
+                }
+            }
+        });
+
+        // Catálogo Técnico de Productos
+        const products = [
+            {
+                name: "Serie UV Flexo Premium Q",
+                tech: "uv",
+                tags: ["Bajo Olor", "Curado UV"],
+                desc: "Formulación de secado inmediato con altísima densidad de pigmentación. Ideal para etiquetas autoadhesivas de alta velocidad.",
+                badge: "Líder de Exportación",
+                colorClass: "border-red-600"
+            },
+            {
+                name: "Vinílica Solvente Serie 2200",
+                tech: "plastico",
+                tags: ["Plásticos", "Brillo Extremo"],
+                desc: "Excelente anclaje en PVC rígido, flexible, acrílicos y poliestireno. Resistente a la intemperie sin pérdida de brillo.",
+                badge: "Gran Consumo",
+                colorClass: "border-yellow-500"
+            },
+            {
+                name: "Epoxi Bicapa Técnica 4400",
+                tech: "especial",
+                tags: ["Metales", "Vidrio"],
+                desc: "Fórmula de dos componentes (catalizador y base) con resistencia superior a disolventes químicos, grasas y agentes mecánicos.",
+                badge: "Industrial Pesado",
+                colorClass: "border-sky-500"
+            },
+            {
+                name: "Laca UV Ultra Brillo Serie Q-900",
+                tech: "uv",
+                tags: ["Barniz UV", "Packaging"],
+                desc: "Protección superior contra la abrasión para cartulinas encapadas y envases de lujo para cosmética y alimentos (sin contacto directo).",
+                badge: "Premium UV",
+                colorClass: "border-red-600"
+            },
+            {
+                name: "Nitroplast de Alta Flexibilidad",
+                tech: "plastico",
+                tags: ["Polipropileno", "Tratado"],
+                desc: "Diseñada para flexografía y serigrafía sobre películas plásticas tratadas. Flexibilidad insuperable sin cuarteado.",
+                badge: "Fórmula Especial",
+                colorClass: "border-yellow-500"
+            },
+            {
+                name: "Sintética de Secado Rápido",
+                tech: "especial",
+                tags: ["Metalúrgica", "Maquinaria"],
+                desc: "Excelente poder cubritivo sobre chapas de acero, aluminio y maderas preparadas. Resiste aceites de corte y combustibles.",
+                badge: "Alta Estabilidad",
+                colorClass: "border-sky-500"
+            }
+        ];
+
+        function filterProducts(category) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            
+            const filtered = category === 'all' 
+                ? products 
+                : products.filter(p => p.tech === category);
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="brand-card-hover bg-white p-8 rounded-2xl border border-zinc-200 flex flex-col h-full shadow-sm">
+                        <div class="flex justify-between items-start mb-5">
+                            <span class="text-[10px] font-extrabold px-2.5 py-1 bg-zinc-100 text-zinc-900 rounded-lg uppercase tracking-wider">${p.badge}</span>
+                            <div class="flex flex-wrap gap-1 justify-end max-w-[60%]">
+                                ${p.tags.map(t => `<span class="text-[9px] bg-zinc-50 border border-zinc-200 px-2 py-0.5 rounded text-zinc-500 font-semibold">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                        <h4 class="font-extrabold text-xl text-zinc-950 mb-3">${p.name}</h4>
+                        <p class="text-sm text-zinc-500 mb-6 flex-grow leading-relaxed">${p.desc}</p>
+                        <a href="#contacto" onclick="selectSubstrate('${p.tags[0]}')" class="w-full text-center py-3 bg-zinc-950 hover:bg-red-600 text-white hover:text-white font-bold text-xs rounded-xl transition-all uppercase tracking-widest border border-zinc-900 hover:border-red-600">
+                            Solicitar Muestra / Ficha
+                        </a>
+                    </div>
+                `;
+            });
+
+            // Actualizar estilo visual de los botones de filtro
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-zinc-950', 'text-white', 'border-zinc-950');
+                btn.classList.add('bg-white', 'text-zinc-700', 'border-zinc-200');
+            });
+
+            if (window.event && window.event.currentTarget) {
+                window.event.currentTarget.classList.remove('bg-white', 'text-zinc-700', 'border-zinc-200');
+                window.event.currentTarget.classList.add('bg-zinc-950', 'text-white', 'border-zinc-950');
+            }
+        }
+
+        // Inicializar el listado
+        filterProducts('all');
+
+        // Autocompletar sustrato desde el listado de productos
+        function selectSubstrate(substrateName) {
+            const substrateInput = document.getElementById('formSubstrate');
+            if (substrateInput) {
+                substrateInput.value = substrateName;
+                substrateInput.focus();
+            }
+        }
+
+        // Simular descarga de fichas técnicas con feedback táctil
+        function triggerDownload(fileName) {
+            const tempToast = document.createElement('div');
+            tempToast.className = "fixed bottom-5 right-5 bg-zinc-950 text-white px-5 py-4 rounded-xl border border-zinc-800 shadow-2xl z-50 text-xs font-semibold flex items-center gap-3 ";
+            tempToast.innerHTML = `<span>📥</span> Preparando descarga de <strong>${fileName}</strong>...`;
+            document.body.appendChild(tempToast);
+            
+            setTimeout(() => {
+                tempToast.remove();
+                // Simulación de descarga real
+                const fileLink = document.createElement('a');
+                fileLink.href = "#";
+                fileLink.click();
+            }, 1800);
+        }
+
+        // Lógica de validación y simulación de envío B2B
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const successToast = document.getElementById('toastSuccess');
+            successToast.classList.remove('hidden');
+            
+            // Vaciar campos
+            document.getElementById('formCompany').value = '';
+            document.getElementById('formSubstrate').value = '';
+            document.getElementById('formVolume').value = '';
+            document.getElementById('formSpecs').value = '';
+            
+            setTimeout(() => {
+                successToast.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Dropdown de Secciones (Desktop)
+        function toggleDropdown(event) {
+            if (event) event.stopPropagation();
+            const dropdown = document.getElementById('sectionsDropdown');
+            const arrow = document.getElementById('dropdownArrow');
+            
+            const isHidden = dropdown.classList.contains('hidden');
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                dropdown.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        // Menú Hamburguesa Móvil
+        function toggleMobileMenu(event) {
+            if (event) event.stopPropagation();
+            const mobileMenu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            const isHidden = mobileMenu.classList.contains('hidden');
+            
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                icon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                closeMobileMenu();
+            }
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (mobileMenu) mobileMenu.classList.add('hidden');
+            if (icon) icon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        }
+
+        // Cerrar componentes al hacer click fuera del área activa
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('sectionsDropdown');
+            const arrow = document.getElementById('dropdownArrow');
+            
+            if (dropdown && !dropdown.contains(event.target) && !event.target.closest('button')) {
+                dropdown.classList.add('hidden');
+                if (arrow) arrow.classList.remove('rotate-180');
+            }
+
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu && !mobileMenu.contains(event.target) && !event.target.closest('button')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Configuración para cerrar dropdown al seleccionar opciones
+        document.querySelectorAll('#sectionsDropdown a').forEach(link => {
+            link.addEventListener('click', () => {
+                const dropdown = document.getElementById('sectionsDropdown');
+                const arrow = document.getElementById('dropdownArrow');
+                if (dropdown) dropdown.classList.add('hidden');
+                if (arrow) arrow.classList.remove('rotate-180');
+            });
+        });
+    </script>
+</body>
+</html>
